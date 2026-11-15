@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keisha | Portofolio Super Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9e4ea;
+      --grid: #eccbd4;
+      --window: #b9dedb;
+      --titlebar: #fdf8c2;
+      --tag-kuning: #fff7c4;
+      --tag-ungu: #c2c3da;
+      --tag-pink: #f7e4ea;
+      --text: #000;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Pixelify Sans", monospace;
+      color: var(--text);
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(var(--grid) 3px, transparent 3px),
+        linear-gradient(90deg, var(--grid) 3px, transparent 3px);
+      background-size: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px 16px;
+    }
+
+    .beranda {
+      align-self: flex-start;
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--titlebar);
+      padding: 8px 16px;
+      border-radius: 100px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .beranda:hover { background: #fff; }
+
+    /* Ukuran jendela mengikuti desain Figma (952 x 630) dan menyusut di layar kecil.
+       --u = 1px desain, dihitung dari lebar jendela. */
+    .wadah {
+      width: min(952px, 100%);
+      container-type: inline-size;
+    }
+
+    .jendela {
+      --u: calc(100cqw / 952);
+      position: relative;
+      width: 100%;
+      aspect-ratio: 952 / 630;
+      background: var(--window);
+      border-radius: calc(26 * var(--u));
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .title-bar {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: calc(62 * var(--u));
+      background: var(--titlebar);
+      display: flex;
+      align-items: center;
+      gap: calc(8 * var(--u));
+      padding-left: calc(24 * var(--u));
+    }
+    .title-bar span {
+      width: calc(14 * var(--u));
+      height: calc(14 * var(--u));
+      border-radius: 50%;
+    }
+    .title-bar .merah { background: #ff5f57; }
+    .title-bar .kuning { background: #febc2e; }
+    .title-bar .hijau { background: #28c840; }
+
+    /* Area isi: padding desain 16px kiri/kanan, 64px atas */
+    .isi {
+      position: absolute;
+      left: calc(16 * var(--u));
+      top: calc(64 * var(--u));
+      width: calc(920 * var(--u));
+      height: calc(550 * var(--u));
+    }
+
+    .foto {
+      position: absolute;
+      left: calc(15 * var(--u));
+      top: calc(38 * var(--u));
+      width: calc(334 * var(--u));
+      height: calc(475 * var(--u));
+      border-radius: calc(30 * var(--u));
+      object-fit: cover;
+    }
+
+    .nama {
+      position: absolute;
+      left: calc(15 * var(--u));
+      top: calc(319 * var(--u));
+      width: calc(578 * var(--u));
+      height: calc(179 * var(--u));
+      object-fit: cover;
+    }
+
+    .tag {
+      position: absolute;
+      left: calc(var(--x) * var(--u));
+      top: calc(var(--y) * var(--u));
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+      padding: calc(12 * var(--u)) calc(16 * var(--u));
+      border-radius: 100px;
+      font-size: calc(32 * var(--u));
+      line-height: 1;
+      white-space: nowrap;
+      list-style: none;
+    }
+    .tag.kuning { background: var(--tag-kuning); }
+    .tag.ungu { background: var(--tag-ungu); }
+    .tag.pink { background: var(--tag-pink); }
+
+    .daftar { list-style: none; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <a class="beranda" href="index.html">&larr; Beranda</a>
+
+  <main class="wadah">
+    <div class="jendela">
+      <div class="title-bar" aria-hidden="true">
+        <span class="merah"></span>
+        <span class="kuning"></span>
+        <span class="hijau"></span>
+      </div>
+
+      <div class="isi">
+        <h1 class="sr-only">Keisha Neira</h1>
+        <img class="foto" src="img/keisha/foto.png" alt="Foto profil Keisha">
+        <img class="nama" src="img/keisha/nama.png" alt="Keisha">
+
+        <section aria-label="Hobi">
+          <h2 class="tag kuning" style="--x: 437; --y: 78; font-weight: 400;">Hobi</h2>
+          <ul class="daftar">
+            <li class="tag kuning" style="--x: 521; --y: 160; --r: 9.06deg;">Masak</li>
+            <li class="tag kuning" style="--x: 448; --y: 240; --r: -5.04deg;">Basket</li>
+          </ul>
+        </section>
+
+        <section aria-label="Keahlian">
+          <h2 class="tag pink" style="--x: 760; --y: 74; --r: 3.43deg; font-weight: 400;">Keahlian</h2>
+          <ul class="daftar">
+            <li class="tag pink" style="--x: 793; --y: 160; --r: -4.9deg;">UI/UX</li>
+            <li class="tag pink" style="--x: 696; --y: 226; --r: 8.55deg;">Java</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
