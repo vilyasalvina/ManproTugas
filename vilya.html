@@ -133,6 +133,39 @@
 
     .daftar { list-style: none; }
 
+    /* Aktivitas terakhir (Siklus 2) */
+    .tag.kecil {
+      padding: calc(7.88 * var(--u)) calc(10.51 * var(--u));
+      font-size: calc(21 * var(--u));
+    }
+    .aktivitas {
+      position: absolute;
+      left: calc(755.1 * var(--u));
+      top: calc(383.3 * var(--u));
+      width: calc(153 * var(--u));
+      height: calc(178 * var(--u));
+      transform: translate(-50%, -50%) rotate(5.81deg);
+      object-fit: cover;
+    }
+    .status {
+      position: absolute;
+      left: calc(721.1 * var(--u));
+      top: calc(497.8 * var(--u));
+      transform: translate(-50%, -50%) rotate(4.45deg);
+      font-size: calc(32 * var(--u));
+      white-space: nowrap;
+    }
+    .keterangan {
+      margin-top: 20px;
+      padding: 14px 22px;
+      border-radius: 22px;
+      background: var(--titlebar);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      font-size: clamp(15px, 2.4cqw, 22px);
+      line-height: 1.4;
+    }
+    .keterangan strong { font-weight: 500; }
+
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -172,8 +205,19 @@
             <li class="tag pink" style="--x: 755; --y: 158; --r: -8.22deg;">Nonton Film</li>
           </ul>
         </section>
+
+        <section aria-label="Aktivitas terakhir">
+          <img class="aktivitas" src="img/vilya/aktivitas-ukulele.jpg" alt="Foto ukulele ungu milik Vilya">
+          <h2 class="tag pink kecil" style="--x: 698; --y: 293; --r: -8.39deg; font-weight: 400;">*Recent Activity*</h2>
+          <p class="status">Playing Ukulele</p>
+        </section>
       </div>
     </div>
+
+    <p class="keterangan">
+      <strong>Aktivitas terakhir &mdash; Playing Ukulele:</strong>
+      Lagi belajar main ukulele.
+    </p>
   </main>
 </body>
 </html>
