@@ -133,6 +133,29 @@
 
     .daftar { list-style: none; }
 
+    /* Aktivitas terakhir (Siklus 2) */
+    .tag.kecil {
+      padding: calc(7.88 * var(--u)) calc(10.51 * var(--u));
+      font-size: calc(21 * var(--u));
+    }
+    .aktivitas {
+      position: absolute;
+      left: calc(787.6 * var(--u));
+      top: calc(384.9 * var(--u));
+      width: calc(161 * var(--u));
+      height: calc(201 * var(--u));
+      transform: translate(-50%, -50%) rotate(7.28deg);
+      object-fit: cover;
+    }
+    .status {
+      position: absolute;
+      left: calc(759.5 * var(--u));
+      top: calc(510 * var(--u));
+      transform: translate(-50%, -50%);
+      font-size: calc(32 * var(--u));
+      white-space: nowrap;
+    }
+
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -172,6 +195,12 @@
             <li class="tag pink" style="--x: 793; --y: 160; --r: -4.9deg;">UI/UX</li>
             <li class="tag pink" style="--x: 696; --y: 226; --r: 8.55deg;">Java</li>
           </ul>
+        </section>
+
+        <section aria-label="Aktivitas terakhir">
+          <img class="aktivitas" src="img/keisha/aktivitas-working.jpg" alt="Foto Keisha sedang bekerja bersama tim">
+          <h2 class="tag ungu kecil" style="--x: 760; --y: 304; --r: -8.39deg; font-weight: 400;">*Recent Activity*</h2>
+          <p class="status">Working</p>
         </section>
       </div>
     </div>
