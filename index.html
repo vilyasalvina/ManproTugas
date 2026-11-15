@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio Super Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8e7ec;
+      --grid: #ecd3da;
+      --menu-text: #6b69a8;
+      --glass: rgba(246, 246, 246, 0.88);
+      --text-vibrant: #4d4d4d;
+      --dock: rgba(186, 222, 218, 0.58);
+      --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+      --font-pixel: "Pixelify Sans", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background-color: var(--bg);
+      font-family: var(--font-ui);
+      color: #000;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Desktop mengikuti frame Figma "Main" (1728 x 1117).
+       --u = 1px desain, dihitung dari lebar layar. */
+    .desktop {
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    .layar {
+      --u: calc(100cqw / 1728);
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1728 / 1117;
+      overflow: hidden;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(var(--grid) calc(5 * var(--u)), transparent calc(5 * var(--u))),
+        linear-gradient(90deg, var(--grid) calc(5 * var(--u)), transparent calc(5 * var(--u)));
+      background-size: calc(78.6 * var(--u)) calc(78.6 * var(--u));
+      background-position: calc(3 * var(--u)) calc(-30 * var(--u));
+    }
+
+    .abs {
+      position: absolute;
+      left: calc(var(--l) * var(--u));
+      top: calc(var(--t) * var(--u));
+    }
+
+    .putar {
+      position: absolute;
+      left: calc(var(--cx) * var(--u));
+      top: calc(var(--cy) * var(--u));
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+    }
+
+    /* ---------- Menu bar ---------- */
+    .menubar {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: calc(49 * var(--u));
+      padding: 0 calc(28 * var(--u));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--menu-text);
+      font-size: calc(18.5 * var(--u));
+      font-weight: 500;
+      z-index: 5;
+    }
+    .menubar::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: calc(103 * var(--u));
+      background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+      pointer-events: none;
+      z-index: -1;
+    }
+    .menubar .kiri, .menubar .kanan {
+      display: flex;
+      align-items: center;
+      gap: calc(32 * var(--u));
+    }
+    .menubar .nama-app { font-weight: 600; }
+    .menubar svg {
+      width: calc(22 * var(--u));
+      height: calc(22 * var(--u));
+      display: block;
+    }
+    .menubar .ikon-kanan { display: flex; gap: calc(34 * var(--u)); align-items: center; }
+
+    /* ---------- Widget cuaca ---------- */
+    .cuaca {
+      width: calc(443.62 * var(--u));
+      height: calc(209 * var(--u));
+      border-radius: calc(29.22 * var(--u));
+      background: linear-gradient(#1c86b4, #3eaede);
+      color: #fff;
+      font-weight: 500;
+    }
+    .cuaca p { position: absolute; white-space: nowrap; line-height: 1.2; }
+    .cuaca .kota { left: calc(21.57 * var(--u)); top: calc(21.57 * var(--u)); font-size: calc(21.57 * var(--u)); font-weight: 600; }
+    .cuaca .suhu { left: calc(18.88 * var(--u)); top: calc(36.41 * var(--u)); font-size: calc(59.33 * var(--u)); font-weight: 200; }
+    .cuaca .matahari-besar { position: absolute; left: calc(397.77 * var(--u)); top: calc(21.57 * var(--u)); }
+    .cuaca .kondisi { right: calc(21.57 * var(--u)); top: calc(59.33 * var(--u)); font-size: calc(17.53 * var(--u)); }
+    .cuaca .hl { right: calc(21.57 * var(--u)); top: calc(79.55 * var(--u)); font-size: calc(17.53 * var(--u)); }
+    .cuaca img { width: calc(24.27 * var(--u)); height: calc(24.27 * var(--u)); display: block; }
+    .jam {
+      position: absolute;
+      left: calc(var(--cx) * var(--u));
+      top: calc(107.87 * var(--u));
+      width: calc(60 * var(--u));
+      transform: translateX(-50%);
+      text-align: center;
+    }
+    .jam span { display: block; line-height: 1.2; }
+    .jam .label { font-size: calc(16.18 * var(--u)); }
+    .jam img { margin: calc(10 * var(--u)) auto calc(7 * var(--u)); }
+    .jam .t { font-size: calc(17.53 * var(--u)); }
+
+    /* ---------- Tooltip / stiker ---------- */
+    .tooltip {
+      padding: calc(8.67 * var(--u)) calc(17.33 * var(--u));
+      border-radius: calc(10 * var(--u));
+      background: var(--glass);
+      color: var(--text-vibrant);
+      font-size: calc(30 * var(--u));
+      white-space: nowrap;
+      box-shadow: 0 calc(4 * var(--u)) calc(14 * var(--u)) rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(12px);
+      z-index: 3;
+    }
+
+    /* ---------- Notifikasi ---------- */
+    .notif {
+      width: calc(443.22 * var(--u));
+      height: calc(72.54 * var(--u));
+      border-radius: calc(24 * var(--u));
+      background: var(--glass);
+      box-shadow: 0 calc(6 * var(--u)) calc(20 * var(--u)) rgba(0, 0, 0, 0.1);
+    }
+    .notif .ikon-app {
+      position: absolute;
+      left: calc(16.75 * var(--u));
+      top: calc(15.46 * var(--u));
+      width: calc(41.23 * var(--u));
+      height: calc(41.23 * var(--u));
+      border-radius: calc(10 * var(--u));
+      background: #e4e4e6;
+      border: calc(1 * var(--u)) solid #cfcfd3;
+      display: grid;
+      place-items: center;
+    }
+    .notif .ikon-app svg { width: 55%; height: 55%; color: #9a9aa0; }
+    .notif .teks { position: absolute; left: calc(74.73 * var(--u)); top: calc(15.46 * var(--u)); width: calc(320 * var(--u)); }
+    .notif .judul { font-size: calc(15.5 * var(--u)); font-weight: 600; line-height: calc(20.6 * var(--u)); white-space: nowrap; }
+    .notif .isi-notif { font-size: calc(15.5 * var(--u)); line-height: calc(21 * var(--u)); white-space: nowrap; }
+    .notif .waktu { position: absolute; left: calc(403.63 * var(--u)); top: calc(15.46 * var(--u)); font-size: calc(13.5 * var(--u)); color: rgba(0, 0, 0, 0.45); }
+
+    /* ---------- Kalender ---------- */
+    .kalender {
+      width: calc(443 * var(--u));
+      height: calc(208.71 * var(--u));
+      border-radius: calc(29.18 * var(--u));
+      background: #fff;
+      overflow: hidden;
+      font-weight: 500;
+    }
+    .kalender p, .kalender .garis { position: absolute; white-space: nowrap; line-height: 1.2; }
+    .kalender .garis { left: calc(21.54 * var(--u)); width: calc(2.69 * var(--u)); height: calc(60.59 * var(--u)); border-radius: calc(1.35 * var(--u)); }
+    .kalender .acara { left: calc(32.32 * var(--u)); font-size: calc(20.2 * var(--u)); font-weight: 600; }
+    .kalender .detail { left: calc(32.32 * var(--u)); font-size: calc(16.16 * var(--u)); }
+    .kalender .abu { color: rgba(0, 0, 0, 0.5); }
+    .kalender .bulan { left: calc(230.25 * var(--u)); top: calc(18.85 * var(--u)); font-size: calc(16.16 * var(--u)); color: #ee5c51; }
+    .kalender .baris {
+      position: absolute;
+      left: calc(232.95 * var(--u));
+      top: calc(var(--t) * var(--u));
+      display: flex;
+      font-size: calc(13.47 * var(--u));
+    }
+    .kalender .baris span {
+      width: calc(26.93 * var(--u));
+      height: calc(26.93 * var(--u));
+      display: grid;
+      place-items: center;
+    }
+    .kalender .baris.hari { font-size: calc(12.12 * var(--u)); color: rgba(0, 0, 0, 0.5); }
+    .kalender .baris span:first-child, .kalender .baris span:last-child { color: rgba(0, 0, 0, 0.5); }
+    .kalender .hari-ini-bg { position: absolute; left: calc(262 * var(--u)); top: calc(116 * var(--u)); width: calc(24.24 * var(--u)); height: calc(24.24 * var(--u)); }
+    .kalender .baris span.hari-ini { color: #fff; position: relative; }
+
+    /* ---------- Folder anggota ---------- */
+    .folders { display: contents; }
+    .folder {
+      display: block;
+      width: calc(var(--w) * var(--u));
+      height: calc(var(--h) * var(--u));
+      z-index: 2;
+      transition: transform 0.2s ease;
+    }
+    .folder:hover, .folder:focus-visible { transform: translate(-50%, -50%) rotate(var(--r)) scale(1.06); }
+    .folder:focus-visible { outline: 3px solid var(--menu-text); outline-offset: 4px; border-radius: 12px; }
+    .folder .gambar {
+      position: absolute;
+      left: calc(var(--il, 0) * var(--u));
+      top: 0;
+      width: calc(var(--iw) * var(--u));
+      height: calc(var(--ih) * var(--u));
+      overflow: hidden;
+      filter: drop-shadow(0 calc(5.34 * var(--u)) calc(5.34 * var(--u)) rgba(0, 0, 0, 0.25));
+    }
+    .folder .gambar img {
+      position: absolute;
+      max-width: none;
+      left: var(--cl);
+      top: var(--ct);
+      width: var(--cw);
+      height: var(--ch);
+    }
+    .folder .nama {
+      position: absolute;
+      left: calc(var(--nl) * var(--u));
+      top: calc(var(--nt) * var(--u));
+      font-family: var(--font-pixel);
+      font-size: calc(32 * var(--u));
+      white-space: nowrap;
+      text-shadow: 0 calc(5.34 * var(--u)) calc(5.34 * var(--u)) rgba(0, 0, 0, 0.22);
+    }
+
+    /* ---------- Ikon aplikasi lepas ---------- */
+    .ikon-lepas {
+      width: calc(118.14 * var(--u));
+      height: calc(118.14 * var(--u));
+      filter: drop-shadow(0 calc(4 * var(--u)) calc(2.25 * var(--u)) rgba(0, 0, 0, 0.26));
+    }
+    .appstore .kotak {
+      position: absolute;
+      inset: 0;
+      border-radius: calc(26.58 * var(--u));
+      background: linear-gradient(#1bb3f3, #186ce6);
+      box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.05), inset 1px 1px 1px rgba(255, 255, 255, 0.2);
+    }
+    .appstore .glyph { position: absolute; inset: 16.94% 12.33% 19.22% 15.4%; }
+    .appstore .glyph img { position: absolute; inset: -3.06% -11.89% -23.87% -11.89%; width: 123.78%; height: 126.93%; }
+    .settings img { position: absolute; left: 0; top: 0; width: 100%; height: 103.86%; }
+
+    /* ---------- Dock ---------- */
+    .dock {
+      position: absolute;
+      left: calc(50% - 0.68 * var(--u));
+      bottom: calc(48 * var(--u));
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: calc(23.13 * var(--u));
+      padding: calc(23.13 * var(--u));
+      border-radius: calc(41.92 * var(--u));
+      background: var(--dock);
+      z-index: 4;
+    }
+    .dock .app {
+      position: relative;
+      display: block;
+      width: calc(86.74 * var(--u));
+      height: calc(86.74 * var(--u));
+      transition: transform 0.15s ease;
+    }
+    .dock a.app:hover, .dock a.app:focus-visible { transform: translateY(calc(-8 * var(--u))); }
+    .dock .vsc img { position: absolute; left: -12.68%; width: 124.51%; top: calc(-11 * var(--u)); aspect-ratio: 1; }
+    .dock .tengah img { position: absolute; left: 50%; top: 50%; width: calc(108 * var(--u)); height: calc(108 * var(--u)); transform: translate(-50%, -50%); }
+    .dock .safari img { width: 100%; height: 100%; display: block; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    /* ---------- Layar kecil (HP): susun ke bawah ---------- */
+    @media (max-width: 760px) {
+      .layar {
+        --u: 0.74px;
+        aspect-ratio: auto;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: calc(70 * var(--u)) 16px 32px;
+        background-size: 48px 48px;
+        background-image:
+          linear-gradient(var(--grid) 3px, transparent 3px),
+          linear-gradient(90deg, var(--grid) 3px, transparent 3px);
+      }
+      .abs, .putar, .dock { position: relative; left: auto; top: auto; bottom: auto; }
+      .putar { transform: rotate(var(--r, 0deg)); }
+      .dock { transform: none; margin-top: 8px; }
+      .menubar { position: absolute; padding: 0 16px; font-size: 13px; }
+      .menubar .menu-item, .menubar .ikon-kanan { display: none; }
+      .menubar svg { width: 14px; height: 14px; }
+      .tooltip, .ikon-lepas { display: none; }
+      .folders {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 4px;
+        margin-top: 12px;
+      }
+      .folder:hover, .folder:focus-visible { transform: rotate(var(--r)) scale(1.06); }
+    }
+  </style>
+</head>
+<body>
+  <main class="desktop">
+    <div class="layar">
+      <h1 class="sr-only">Portofolio Super Team &mdash; Manajemen Projek</h1>
+
+      <!-- Menu bar -->
+      <header class="menubar">
+        <div class="kiri">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.5 0 2 .8 3.3.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.8-1.1-2.8-4.1zM14 5.2c.7-.8 1.2-2 1-3.2-1 0-2.2.7-3 1.5-.6.7-1.2 1.9-1 3.1 1.1.1 2.3-.6 3-1.4z"/></svg>
+          <span class="nama-app">Manajemen Projek - GitHub</span>
+          <span class="menu-item">File</span>
+          <span class="menu-item">Edit</span>
+          <span class="menu-item">View</span>
+          <span class="menu-item">Windows</span>
+          <span class="menu-item">Help</span>
+        </div>
+        <div class="kanan">
+          <div class="ikon-kanan" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16.1a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19.4" r="1.2" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.4" fill="currentColor" stroke="none"/><path d="M5.8 18.6c1.5-2.2 3.6-3.2 6.2-3.2s4.7 1 6.2 3.2" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3.5" width="18" height="7" rx="3.5"/><circle cx="17.5" cy="7" r="2" fill="currentColor"/><rect x="3" y="13.5" width="18" height="7" rx="3.5"/><circle cx="6.5" cy="17" r="2" fill="currentColor"/></svg>
+          </div>
+          <span id="jam-menubar">Sun Nov 15&nbsp;&nbsp;11:41 AM</span>
+        </div>
+      </header>
+
+      <!-- Widget cuaca -->
+      <section class="cuaca abs" style="--l: 72; --t: 86;" aria-label="Cuaca Ciumbuleuit">
+        <p class="kota">Ciumbulueit</p>
+        <p class="suhu">29°</p>
+        <img class="matahari-besar" src="img/beranda/sun-0.svg" alt="">
+        <p class="kondisi">Sunny</p>
+        <p class="hl">H:30° L:13°</p>
+        <div class="jam" style="--cx: 38.07;"><span class="label">1PM</span><img src="img/beranda/sun-1.svg" alt=""><span class="t">29°</span></div>
+        <div class="jam" style="--cx: 110.54;"><span class="label">2PM</span><img src="img/beranda/sun-2.svg" alt=""><span class="t">28°</span></div>
+        <div class="jam" style="--cx: 183.85;"><span class="label">3PM</span><img src="img/beranda/sun-3.svg" alt=""><span class="t">27°</span></div>
+        <div class="jam" style="--cx: 256.66;"><span class="label">4PM</span><img src="img/beranda/sun-3.svg" alt=""><span class="t">23°</span></div>
+        <div class="jam" style="--cx: 330.83;"><span class="label">5PM</span><img src="img/beranda/sun-4.svg" alt=""><span class="t">19°</span></div>
+        <div class="jam" style="--cx: 403.64;"><span class="label">6PM</span><img src="img/beranda/sun-0.svg" alt=""><span class="t">17°</span></div>
+      </section>
+
+      <div class="tooltip putar" style="--cx: 350.4; --cy: 116.4; --r: -4deg;">Haredang!</div>
+
+      <!-- Notifikasi -->
+      <div class="notif abs" style="--l: 1254; --t: 70;" role="status">
+        <div class="ikon-app" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+        </div>
+        <div class="teks">
+          <p class="judul">Due tomorrow: &ldquo;Praktek Kolaborasi&rdquo;</p>
+          <p class="isi-notif">Don&rsquo;t forget to submit your work!</p>
+        </div>
+        <span class="waktu">now</span>
+      </div>
+
+      <!-- Kalender -->
+      <section class="kalender abs" style="--l: 1254; --t: 162;" aria-label="Kalender November">
+        <span class="garis" style="top: calc(24.24 * var(--u)); background: #b54896;"></span>
+        <p class="acara" style="top: calc(21.54 * var(--u));">Manajemen Projek</p>
+        <p class="detail" style="top: calc(48.47 * var(--u));">Build GitHub!</p>
+        <p class="detail abu" style="top: calc(70.02 * var(--u));">10:00-13:00</p>
+
+        <span class="garis" style="top: calc(122.53 * var(--u)); background: #71b548;"></span>
+        <p class="acara" style="top: calc(119.84 * var(--u));">Informatika</p>
+        <p class="detail" style="top: calc(146.77 * var(--u));">Survive</p>
+        <p class="detail abu" style="top: calc(168.31 * var(--u));">00:00-23:59</p>
+
+        <p class="bulan">November</p>
+        <img class="hari-ini-bg" src="img/beranda/kalender-hari-ini.svg" alt="">
+        <div class="baris hari" style="--t: 40.4;"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div class="baris" style="--t: 64.63;"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+        <div class="baris" style="--t: 90.22;"><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span></div>
+        <div class="baris" style="--t: 114.45;"><span>15</span><span class="hari-ini">16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span></div>
+        <div class="baris" style="--t: 140.04;"><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span></div>
+        <div class="baris" style="--t: 165.62;"><span>29</span><span style="color: #000;">30</span></div>
+      </section>
+
+      <div class="tooltip putar" style="--cx: 1516.9; --cy: 367.7; --r: 7deg;">Let&rsquo;s finish this!</div>
+
+      <!-- Folder anggota: klik untuk membuka halaman profil -->
+      <nav class="folders" aria-label="Anggota tim">
+        <a class="folder putar" href="vilya.html"
+           style="--cx: 912.13; --cy: 154.13; --r: 8.86deg; --w: 206.88; --h: 206.88; --iw: 206.88; --ih: 158.83;">
+          <span class="gambar" style="--cl: -56.62%; --ct: -130.25%; --cw: 213.24%; --ch: 392.86%;">
+            <img src="img/beranda/folder-vilya.png" alt="">
+          </span>
+          <span class="nama" style="--nl: 52.05; --nt: 164.17;">Vilya A</span>
+        </a>
+        <a class="folder putar" href="rayzan.html"
+           style="--cx: 1503.42; --cy: 639.2; --r: 6.16deg; --w: 205.54; --h: 209.54; --il: 1.33; --iw: 205.54; --ih: 166.84;">
+          <span class="gambar" style="--cl: -63.64%; --ct: -131.22%; --cw: 225%; --ch: 390.83%;">
+            <img src="img/beranda/folder-rayzan.png" alt="">
+          </span>
+          <span class="nama" style="--nl: 26.69; --nt: 170.84;">Rayzan W</span>
+        </a>
+        <a class="folder putar" href="keisha.html"
+           style="--cx: 225.53; --cy: 822.65; --r: -8.49deg; --w: 208.21; --h: 210.88; --iw: 208.21; --ih: 168.17;">
+          <span class="gambar" style="--cl: -52.1%; --ct: -114.42%; --cw: 206.73%; --ch: 362.08%;">
+            <img src="img/beranda/folder-keisha.png" alt="">
+          </span>
+          <span class="nama" style="--nl: 41.38; --nt: 172.17;">Keisha N</span>
+        </a>
+      </nav>
+
+      <!-- Ikon aplikasi lepas -->
+      <div class="ikon-lepas appstore putar" style="--cx: 418.7; --cy: 523.7; --r: -16.91deg;" aria-hidden="true">
+        <span class="kotak"></span>
+        <span class="glyph"><img src="img/beranda/appstore-glyph.svg" alt=""></span>
+      </div>
+      <div class="ikon-lepas settings putar" style="--cx: 1392.88; --cy: 988.88; --r: 8.19deg;" aria-hidden="true">
+        <img src="img/beranda/settings.svg" alt="">
+      </div>
+
+      <!-- Dock -->
+      <div class="dock">
+        <span class="app vsc"><img src="img/beranda/vscode.png" alt="VS Code"></span>
+        <a class="app tengah" href="https://github.com/vilyasalvina/ManproTugas" target="_blank" rel="noopener">
+          <img src="img/beranda/github.png" alt="Repositori GitHub ManproTugas">
+        </a>
+        <span class="app tengah"><img src="img/beranda/linkedin.png" alt="LinkedIn"></span>
+        <span class="app safari"><img src="img/beranda/safari.svg" alt="Safari"></span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Jam di menu bar mengikuti waktu sekarang (format seperti macOS).
+    (function () {
+      var el = document.getElementById("jam-menubar");
+      if (!el) return;
+      function perbarui() {
+        var d = new Date();
+        var hari = d.toLocaleDateString("en-US", { weekday: "short" });
+        var tgl = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        var jam = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+        el.innerHTML = hari + " " + tgl + "&nbsp;&nbsp;" + jam;
+      }
+      perbarui();
+      setInterval(perbarui, 30000);
+    })();
+  </script>
+</body>
+</html>
