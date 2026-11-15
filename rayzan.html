@@ -158,6 +158,70 @@
       white-space: nowrap;
     }
 
+    /* ---------- Siklus 3: tombol Surprise Me + pop-up kejutan ---------- */
+    body { font-variant-ligatures: none; } /* supaya "fi" tidak menyatu di font pixel */
+    .surprise {
+      position: absolute;
+      left: calc(735 * var(--u));
+      top: calc(8 * var(--u));
+      height: calc(46 * var(--u));
+      padding: 0 calc(14.6 * var(--u));
+      border: 0;
+      border-radius: 100px;
+      background: #f57e9a;
+      color: #fff;
+      font: inherit;
+      font-size: calc(29.22 * var(--u));
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .surprise:hover, .surprise:focus-visible { transform: scale(1.06) rotate(-2deg); }
+
+    .kejutan {
+      margin: auto;
+      padding: 0;
+      border: 0;
+      width: min(360px, calc(100vw - 32px));
+      border-radius: 22px;
+      background: var(--window);
+      color: var(--text);
+      font-family: inherit;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px rgba(0, 0, 0, 0.35);
+    }
+    .kejutan::backdrop { background: rgba(60, 40, 50, 0.3); }
+    .kejutan[open] { animation: muncul 0.25s ease-out; }
+    @keyframes muncul {
+      from { transform: scale(0.7) rotate(-6deg); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+    .kejutan-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--titlebar);
+      font-size: 18px;
+    }
+    .kejutan-bar i { display: block; width: 12px; height: 12px; border-radius: 50%; }
+    .kejutan-bar b { margin-left: 8px; font-weight: 500; }
+    .kejutan-emoji { margin-top: 18px; font-size: 64px; line-height: 1; }
+    .kejutan-teks { padding: 12px 22px 4px; font-size: 22px; line-height: 1.35; }
+    .kejutan-aksi { display: flex; justify-content: center; gap: 10px; padding: 14px 16px 20px; }
+    .kejutan-aksi button {
+      border: 0;
+      border-radius: 100px;
+      padding: 10px 20px;
+      background: #f57e9a;
+      color: #fff;
+      font: inherit;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .kejutan-aksi button.tutup { background: #fff; color: #000; }
+
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -172,10 +236,11 @@
 
   <main class="wadah">
     <div class="jendela">
-      <div class="title-bar" aria-hidden="true">
-        <span class="merah"></span>
-        <span class="kuning"></span>
-        <span class="hijau"></span>
+      <div class="title-bar">
+        <span class="merah" aria-hidden="true"></span>
+        <span class="kuning" aria-hidden="true"></span>
+        <span class="hijau" aria-hidden="true"></span>
+        <button class="surprise" id="tombol-surprise" type="button">* Suprise Me!</button>
       </div>
 
       <div class="isi">
@@ -208,5 +273,57 @@
       </div>
     </div>
   </main>
+  <!-- Siklus 3: pop-up kejutan (isi diacak oleh JavaScript) -->
+  <dialog class="kejutan" id="kejutan" aria-labelledby="kejutan-judul">
+    <div class="kejutan-isi">
+      <div class="kejutan-bar">
+        <i style="background: #ff5f57;"></i><i style="background: #febc2e;"></i><i style="background: #28c840;"></i>
+        <b id="kejutan-judul">Surprise!</b>
+      </div>
+      <p class="kejutan-emoji" id="kejutan-emoji" aria-hidden="true"></p>
+      <p class="kejutan-teks" id="kejutan-teks"></p>
+      <div class="kejutan-aksi">
+        <button type="button" id="kejutan-lagi">Lagi!</button>
+        <button type="button" class="tutup" id="kejutan-tutup">Tutup</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    // Siklus 3: tombol Surprise Me -> pop-up dengan isi acak yang lucu.
+    (function () {
+      var daftar = [
+        { emoji: "🎬", teks: "Render 99%... sabar ya, sebentar lagi (katanya)." },
+        { emoji: "🍜", teks: "Python atau Java? Makan dulu, baru mikir." },
+        { emoji: "😴", teks: "Hobi: Bobo. Skill rahasia: bisa bobo di mana saja." },
+        { emoji: "💾", teks: "Tips hari ini: Ctrl+S sebelum render!" },
+        { emoji: "🎨", teks: "Selamat! Kamu menang 1 sesi konsultasi desain gratis." },
+        { emoji: "🐛", teks: "Bukan bug, itu fitur kejutan." }
+      ];
+
+      var dialog = document.getElementById("kejutan");
+      var tombol = document.getElementById("tombol-surprise");
+      if (!dialog || !tombol || typeof dialog.showModal !== "function") return;
+
+      var emoji = document.getElementById("kejutan-emoji");
+      var teks = document.getElementById("kejutan-teks");
+      var terakhir = -1;
+
+      // Pilih isi secara acak, tapi jangan sama dengan yang baru saja muncul.
+      function acak() {
+        var i;
+        do { i = Math.floor(Math.random() * daftar.length); } while (i === terakhir);
+        terakhir = i;
+        emoji.textContent = daftar[i].emoji;
+        teks.textContent = daftar[i].teks;
+      }
+
+      tombol.addEventListener("click", function () { acak(); dialog.showModal(); });
+      document.getElementById("kejutan-lagi").addEventListener("click", acak);
+      document.getElementById("kejutan-tutup").addEventListener("click", function () { dialog.close(); });
+      // Klik di luar pop-up menutupnya.
+      dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+    })();
+  </script>
 </body>
 </html>
