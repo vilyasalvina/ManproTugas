@@ -15,6 +15,7 @@
       --titlebar: #fdf8c2;
       --tag-kuning: #fff7c4;
       --tag-ungu: #c2c3da;
+      --tag-pink: #f7e4ea;
       --text: #000;
     }
 
@@ -128,8 +129,34 @@
     }
     .tag.kuning { background: var(--tag-kuning); }
     .tag.ungu { background: var(--tag-ungu); }
+    .tag.pink { background: var(--tag-pink); }
+    .tag.kecil {
+      padding: calc(7.88 * var(--u)) calc(10.51 * var(--u));
+      font-size: calc(21 * var(--u));
+    }
 
     .daftar { list-style: none; }
+
+    /* Aktivitas terakhir (Siklus 2) */
+    .aktivitas {
+      position: absolute;
+      left: calc(791.3 * var(--u));
+      top: calc(406.3 * var(--u));
+      width: calc(165.07 * var(--u));
+      height: calc(247.6 * var(--u));
+      transform: translate(-50%, -50%) rotate(5.65deg);
+      object-fit: cover;
+    }
+    .status {
+      position: absolute;
+      left: calc(782.3 * var(--u));
+      top: calc(497 * var(--u));
+      transform: translate(-50%, -50%) rotate(4.5deg);
+      font-size: calc(32 * var(--u));
+      color: #fff;
+      text-shadow: 0 calc(4 * var(--u)) calc(4 * var(--u)) rgba(0, 0, 0, 0.25);
+      white-space: nowrap;
+    }
 
     .sr-only {
       position: absolute;
@@ -171,6 +198,12 @@
             <li class="tag ungu" style="--x: 730; --y: 140; --r: -10.88deg;">Makan</li>
             <li class="tag ungu" style="--x: 806; --y: 221; --r: 6.06deg;">Bobo</li>
           </ul>
+        </section>
+
+        <section aria-label="Aktivitas terakhir">
+          <img class="aktivitas" src="img/rayzan/aktivitas-editing.png" alt="Tangkapan layar Rayzan sedang editing video">
+          <h2 class="tag pink kecil" style="--x: 760; --y: 304; --r: -8.39deg; font-weight: 400;">*Recent Activity*</h2>
+          <p class="status">Editing</p>
         </section>
       </div>
     </div>
